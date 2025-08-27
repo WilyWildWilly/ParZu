@@ -12,7 +12,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     python-is-python3
 
 ADD https://api.github.com/repos/rsennrich/ParZu/git/refs/heads/master version.json
-RUN git clone https://github.com/rsennrich/ParZu
+RUN git clone https://github.com/WilyWildWilly/ParZu.git
 
 RUN (cd ParZu; bash install.sh)
 
