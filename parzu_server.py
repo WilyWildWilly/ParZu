@@ -65,11 +65,11 @@ class Server(object):
         self.app = Flask('ParZuServer')
         self.app.config['APPLICATION_ROOT'] = '/demo/parzu'
 
-        @self.app.route('/', methods=['GET'])
+        @self.app.route('/demo/parzu/', methods=['GET'])
         def index():
             return Response(index_str, 200, mimetype='text/html')
 
-        @self.app.route('/parse/', methods=['GET', 'POST'])
+        @self.app.route('/demo/parzu/parse/', methods=['GET', 'POST'])
         def parse():
             if request.method == "GET":
                 text = request.args.get('text', None)
