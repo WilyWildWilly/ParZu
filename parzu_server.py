@@ -63,13 +63,14 @@ class Server(object):
             options['extrainfo'] = 'secedges'
         self.parser = Parser(options, timeout=timeout)
         self.app = Flask('ParZuServer')
+        self.app.wsgi_app = ReverseProxied(self.app.wsgi_app)
         self.app.config['APPLICATION_ROOT'] = '/demo/parzu'
 
         @self.app.route('/', methods=['GET'])
         def index():
             return Response(index_str, 200, mimetype='text/html')
 
-        @self.app.route('/parse/', methods=['GET', 'POST'])
+        @self.app.route('/parse', methods=['GET', 'POST'])
         def parse():
             if request.method == "GET":
                 text = request.args.get('text', None)
@@ -105,6 +106,19 @@ class Server(object):
                 return Response(parses[0], mimetype='image/svg+xml')
 
             return Response(result, mimetype='text/plain')
+
+class ReverseProxied(object):
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+        if script_name:
+            environ['SCRIPT_NAME'] = script_name
+            path_info = environ['PATH_INFO']
+            if path_info.startswith(script_name):
+                environ['PATH_INFO'] = path_info[len(script_name):]
+        return self.app(environ, start_response)
 
 if __name__ == '__main__':
     import argparse
