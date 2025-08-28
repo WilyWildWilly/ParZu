@@ -63,6 +63,7 @@ class Server(object):
             options['extrainfo'] = 'secedges'
         self.parser = Parser(options, timeout=timeout)
         self.app = Flask('ParZuServer')
+        self.app.config['APPLICATION_ROOT'] = '/demo/parzu'
 
         @self.app.route('/', methods=['GET'])
         def index():
