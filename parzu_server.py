@@ -69,7 +69,7 @@ class Server(object):
         def index():
             return Response(index_str, 200, mimetype='text/html')
 
-        @self.app.route('/parse', methods=['GET', 'POST'])
+        @self.app.route('/parse/', methods=['GET', 'POST'])
         def parse():
             if request.method == "GET":
                 text = request.args.get('text', None)
