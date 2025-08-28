@@ -63,7 +63,6 @@ class Server(object):
             options['extrainfo'] = 'secedges'
         self.parser = Parser(options, timeout=timeout)
         self.app = Flask('ParZuServer')
-        self.app.wsgi_app = ReverseProxied(self.app.wsgi_app)
         self.app.config['APPLICATION_ROOT'] = '/demo/parzu'
 
         @self.app.route('/', methods=['GET'])
